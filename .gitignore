@@ -1,0 +1,19 @@
+# Python
+backend/venv/
+backend/__pycache__/
+**/__pycache__/
+*.pyc
+
+# Runtime data (regenerated on boot / by the app, not source)
+backend/compliance.db
+backend/uploads/
+backend/generated_reports/
+
+# OS/editor cruft
+.DS_Store
+__MACOSX/
+.vscode/
+.idea/
+
+# Env files (never commit real secrets)
+.env

@@ -1,0 +1,114 @@
+[
+  {
+    "id": "PRD0001",
+    "file": "PRD0001.png",
+    "title": "LED Bulb 18W",
+    "manufacturer": "Nestlé Foods India Pvt. Ltd.",
+    "expected": "COMPLIANT",
+    "hint": "Fully compliant label"
+  },
+  {
+    "id": "PRD0013",
+    "file": "PRD0013.png",
+    "title": "Herbal Shampoo",
+    "manufacturer": "Radhika Opto Electronics Ltd.",
+    "expected": "COMPLIANT",
+    "hint": "Fully compliant label"
+  },
+  {
+    "id": "PRD0014",
+    "file": "PRD0014.png",
+    "title": "Herbal Shampoo",
+    "manufacturer": "BPL Electro Appliances Ltd.",
+    "expected": "COMPLIANT",
+    "hint": "Fully compliant label"
+  },
+  {
+    "id": "PRD0002",
+    "file": "PRD0002.png",
+    "title": "Basmati Rice Premium",
+    "manufacturer": "Amul Dairy Cooperative Ltd.",
+    "expected": "NON_COMPLIANT",
+    "hint": "Manufacturer address missing"
+  },
+  {
+    "id": "PRD0003",
+    "file": "PRD0003.png",
+    "title": "Washing Detergent Powder",
+    "manufacturer": "Unknown",
+    "expected": "NON_COMPLIANT",
+    "hint": "Manufacturer name missing"
+  },
+  {
+    "id": "PRD0004",
+    "file": "PRD0004.png",
+    "title": "Basmati Rice Premium",
+    "manufacturer": "Patanjali Ayurved Ltd.",
+    "expected": "NON_COMPLIANT",
+    "hint": "Vague / non-standard net quantity"
+  },
+  {
+    "id": "PRD0005",
+    "file": "PRD0005.png",
+    "title": "LED Bulb 18W",
+    "manufacturer": "ABC Foods Pvt. Ltd.",
+    "expected": "NON_COMPLIANT",
+    "hint": "MRP declaration missing"
+  },
+  {
+    "id": "PRD0006",
+    "file": "PRD0006.png",
+    "title": "Refined Sunflower Oil",
+    "manufacturer": "Patanjali Ayurved Ltd.",
+    "expected": "NON_COMPLIANT",
+    "hint": "MRP missing 'inclusive of taxes' wording"
+  },
+  {
+    "id": "PRD0007",
+    "file": "PRD0007.png",
+    "title": "LED Bulb 18W",
+    "manufacturer": "Radhika Opto Electronics Ltd.",
+    "expected": "NON_COMPLIANT",
+    "hint": "Manufacturing/packing date missing"
+  },
+  {
+    "id": "PRD0008",
+    "file": "PRD0008.png",
+    "title": "Herbal Shampoo",
+    "manufacturer": "Nestlé Foods India Pvt. Ltd.",
+    "expected": "NON_COMPLIANT",
+    "hint": "Malformed date declaration"
+  },
+  {
+    "id": "PRD0009",
+    "file": "PRD0009.png",
+    "title": "Herbal Shampoo",
+    "manufacturer": "Patanjali Ayurved Ltd.",
+    "expected": "NON_COMPLIANT",
+    "hint": "Consumer care details missing"
+  },
+  {
+    "id": "PRD0010",
+    "file": "PRD0010.png",
+    "title": "Refined Sunflower Oil",
+    "manufacturer": "Nestlé Foods India Pvt. Ltd.",
+    "expected": "NON_COMPLIANT",
+    "hint": "Font size below legal minimum"
+  },
+  {
+    "id": "PRD0011",
+    "file": "PRD0011.png",
+    "title": "Washing Detergent Powder",
+    "manufacturer": "Amul Dairy Cooperative Ltd.",
+    "expected": "NON_COMPLIANT",
+    "hint": "Multiple violations: MRP missing 'inclusive of taxes' wording, Manufacturer address missing"
+  },
+  {
+    "id": "PRD0012",
+    "file": "PRD0012.png",
+    "title": "Herbal Shampoo",
+    "manufacturer": "Nestlé Foods India Pvt. Ltd.",
+    "expected": "NON_COMPLIANT",
+    "hint": "Multiple violations: Consumer care details missing, Manufacturing/packing date missing"
+  }
+]

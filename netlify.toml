@@ -1,0 +1,25 @@
+# Netlify deploy config for the Parakh frontend (static site only).
+# The backend (FastAPI + OCR) is NOT deployed by this file -- see
+# backend/DEPLOY.md for deploying it separately (Render/Railway/Fly.io).
+
+[build]
+  base    = "frontend"
+  publish = "."
+  # No build command needed -- this is a plain static site (no bundler).
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+[[headers]]
+  for = "/locales/*"
+  [headers.values]
+    Cache-Control = "public, max-age=3600"
+
+[[headers]]
+  for = "/vendor/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"

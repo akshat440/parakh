@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Parakh | Legal Metrology Compliance System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;600;700&family=Noto+Sans+Tamil:wght@400;600;700&family=Noto+Sans+Telugu:wght@400;600;700&family=Noto+Sans+Kannada:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+<!--
+  Chart.js and Leaflet are bundled locally in vendor/ instead of loaded
+  from cdnjs.cloudflare.com. Several demo environments (corporate
+  networks, restricted sandboxes) block that CDN outright, which left
+  `Chart` and `L` undefined at runtime -- every dashboard widget below
+  the stat cards failed silently with "Chart is not defined" /
+  "L is not defined" in the console. Serving the same library code from
+  this project's own frontend/ directory removes that external
+  dependency entirely.
+-->
+<script src="vendor/chartjs/chart.umd.min.js"></script>
+<link rel="stylesheet" href="vendor/leaflet/leaflet.css"/>
+<script src="vendor/leaflet/leaflet.js"></script>
+</head>
+<body>
+
+<!-- ======================= LOGIN SCREEN ======================= -->
+<div id="login-screen">
+  <div class="lang-switch-login"><select class="lang-select"></select></div>
+  <div class="login-card">
+    <div class="tricolor-strip"></div>
+    <div class="login-card-body">
+      <div class="login-header">
+        <img src="assets/emblem.svg" alt="Emblem">
+        <div>
+          <h1 data-i18n="app_title">Parakh</h1>
+          <p data-i18n="app_tagline" style="font-weight:600; color:var(--navy);">AI-Based Legal Metrology Compliance System</p>
+          <p data-i18n="app_subtitle">Ministry of Consumer Affairs, Food & Public Distribution</p>
+        </div>
+      </div>
+      <div class="login-title" data-i18n="login_quick_title">Quick Demo Access</div>
+      <div class="login-subtitle" data-i18n="login_quick_subtitle">Tap a role to instantly enter the portal — no password needed for this demo</div>
+
+      <div class="login-error" id="login-error" data-i18n="login_error"></div>
+
+      <div class="quick-login-grid" id="quick-login-grid">
+        <button class="quick-login-card" data-username="inspector1" data-password="inspect123">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 12a4 4 0 100-8 4 4 0 000 8zM4 20c0-3.3 3.6-6 8-6s8 2.7 8 6"/></svg>
+          <div class="ql-name">Himanshu Singh</div>
+          <div class="ql-role" data-i18n="role_inspector">Inspector</div>
+        </button>
+        <button class="quick-login-card" data-username="officer1" data-password="officer123">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l8 4v6c0 5-3.4 8.5-8 10-4.6-1.5-8-5-8-10V6l8-4z"/></svg>
+          <div class="ql-name">Priya Sharma</div>
+          <div class="ql-role" data-i18n="role_officer">Senior Officer</div>
+        </button>
+        <button class="quick-login-card" data-username="analyst1" data-password="analyst123">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 19h16M7 15v-4M12 15V7M17 15v-7"/></svg>
+          <div class="ql-name">Ananya Iyer</div>
+          <div class="ql-role" data-i18n="role_analyst">Analyst</div>
+        </button>
+        <button class="quick-login-card" data-username="admin" data-password="admin123">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 2l7 3v6c0 4.8-3 8.7-7 10-4-1.3-7-5.2-7-10V5l7-3z"/><path d="M9.5 12l1.8 1.8L15 10"/></svg>
+          <div class="ql-name">System Admin</div>
+          <div class="ql-role" data-i18n="role_admin">Admin</div>
+        </button>
+      </div>
+
+      <div class="login-divider"><span data-i18n="login_or">or sign in manually</span></div>
+
+      <form id="login-form">
+        <div class="form-group">
+          <label data-i18n="login_username">Username</label>
+          <input type="text" id="login-username" autocomplete="username" required>
+        </div>
+        <div class="form-group">
+          <label data-i18n="login_password">Password</label>
+          <input type="password" id="login-password" autocomplete="current-password" required>
+        </div>
+        <button type="submit" class="btn btn-primary" id="login-btn">
+          <span data-i18n="login_button">Sign In</span>
+        </button>
+      </form>
+      <div class="demo-hint" data-i18n="login_demo_hint">Demo accounts: inspector1 / inspect123, admin / admin123</div>
+    </div>
+  </div>
+
+  <div id="login-loading-overlay">
+    <div class="ll-box">
+      <img src="assets/emblem.svg" alt="" class="ll-emblem">
+      <div class="ll-spinner"></div>
+      <div class="ll-status" id="ll-status" data-i18n="loading_authenticating">Authenticating officer credentials…</div>
+      <div class="ll-progress"><div class="ll-progress-bar" id="ll-progress-bar"></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================= APP SHELL ======================= -->
+<div id="app-screen">
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <img src="assets/emblem.svg" alt="Emblem">
+      <div>
+        <div class="name" data-i18n="app_title" style="font-size:15px; letter-spacing:0.03em;">Parakh</div>
+        <div class="sub" data-i18n="app_tagline">AI-Based Legal Metrology Compliance System</div>
+      </div>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="#dashboard" data-route="dashboard">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
+        <span data-i18n="nav_dashboard">Dashboard</span>
+      </a>
+      <a href="#scan" data-route="scan">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7V5a1 1 0 011-1h2M20 7V5a1 1 0 00-1-1h-2M4 17v2a1 1 0 001 1h2M20 17v2a1 1 0 01-1 1h-2M7 12h10"/></svg>
+        <span data-i18n="nav_scan">Scan Product</span>
+      </a>
+      <a href="#history" data-route="history">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v5h5M3.05 13A9 9 0 106 5.3L3 8"/><path d="M12 7v5l4 2"/></svg>
+        <span data-i18n="nav_history">Inspection History</span>
+      </a>
+      <a href="#rules" data-route="rules">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+        <span data-i18n="nav_rules">Rules Reference</span>
+      </a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div id="user-name">—</div>
+        <span class="role-badge" id="user-role">—</span>
+      </div>
+      <select class="lang-select" style="width:100%;margin-bottom:8px;"></select>
+      <button class="btn btn-outline btn-sm" id="logout-btn" style="width:100%; border-color:rgba(255,255,255,0.4); color:#fff;" data-i18n="nav_logout">Logout</button>
+    </div>
+  </aside>
+
+  <div class="main-area">
+    <div class="tricolor-strip"></div>
+    <header class="topbar">
+      <div>
+        <h2 id="page-title" data-i18n="nav_dashboard">Dashboard</h2>
+        <div class="breadcrumb" id="page-breadcrumb">Home / Dashboard</div>
+      </div>
+    </header>
+
+    <div class="content">
+
+      <!-- ---------------- DASHBOARD VIEW ---------------- -->
+      <section id="view-dashboard" class="view">
+        <div class="grid grid-4" style="margin-bottom:18px;">
+          <div class="card stat-card">
+            <div class="stat-value" id="stat-total">—</div>
+            <div class="stat-label" data-i18n="dash_total_scanned">Total Products Scanned</div>
+          </div>
+          <div class="card stat-card green">
+            <div class="stat-value" id="stat-rate">—</div>
+            <div class="stat-label" data-i18n="dash_compliance_rate">Compliance Rate</div>
+          </div>
+          <div class="card stat-card green">
+            <div class="stat-value" id="stat-compliant">—</div>
+            <div class="stat-label" data-i18n="dash_compliant">Compliant</div>
+          </div>
+          <div class="card stat-card red">
+            <div class="stat-value" id="stat-noncompliant">—</div>
+            <div class="stat-label" data-i18n="dash_non_compliant">Non-Compliant</div>
+          </div>
+        </div>
+
+        <div class="grid grid-2" style="margin-bottom:18px;">
+          <div class="card">
+            <h3 data-i18n="dash_by_state">Inspections by State</h3>
+            <canvas id="chart-state" height="180"></canvas>
+          </div>
+          <div class="card">
+            <h3 data-i18n="dash_violations_by_rule">Violations by Rule</h3>
+            <canvas id="chart-rules" height="180"></canvas>
+          </div>
+        </div>
+
+        <div class="grid grid-2">
+          <div class="card">
+            <h3 data-i18n="dash_heatmap">Violation Heatmap</h3>
+            <div id="map"></div>
+          </div>
+          <div class="card">
+            <h3 data-i18n="dash_top_offenders">Top Offenders (by Violations)</h3>
+            <table>
+              <tbody id="offenders-table"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ---------------- SCAN VIEW ---------------- -->
+      <section id="view-scan" class="view" style="display:none;">
+        <p style="color:var(--text-muted); margin-top:-6px;" data-i18n="scan_subtitle">Upload or capture a photo of the product label to run AI-based compliance verification</p>
+
+        <div class="card" style="margin-bottom:16px;">
+          <h3 data-i18n="scan_sample_title">Or pick a demo product to scan</h3>
+          <p style="font-size:12px; color:var(--text-muted); margin-top:-6px;" data-i18n="scan_sample_subtitle">These sample labels were generated for demo purposes with known outcomes — a quick way to show the full pipeline live.</p>
+          <div class="sample-gallery" id="sample-gallery"></div>
+        </div>
+
+        <div class="grid grid-2" style="align-items:start;">
+          <div class="card">
+            <h3 data-i18n="scan_upload_label">Upload label image</h3>
+            <div class="dropzone" id="dropzone">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 16V4M12 4l4 4M12 4L8 8"/><path d="M4 16v2a2 2 0 002 2h12a2 2 0 002-2v-2"/></svg>
+              <div id="dropzone-text">Drag & drop an image, or click to select</div>
+              <div class="hint">PNG or JPG. Use the sample images in dataset/labels for a quick demo.</div>
+              <input type="file" id="file-input" accept="image/*" style="display:none;">
+            </div>
+            <div id="preview-wrap" style="margin-top:14px; display:none;">
+              <img id="preview-img" class="preview-img">
+            </div>
+
+            <div class="grid grid-2" style="margin-top:14px;">
+              <div class="form-group" style="margin-bottom:0;">
+                <label data-i18n="scan_state_label">State</label>
+                <select id="scan-state">
+                  <option>Madhya Pradesh</option><option>Maharashtra</option>
+                  <option>Delhi</option><option>Karnataka</option><option>Tamil Nadu</option>
+                </select>
+              </div>
+              <div class="form-group" style="margin-bottom:0;">
+                <label data-i18n="scan_district_label">District</label>
+                <input type="text" id="scan-district" value="Bhopal">
+              </div>
+            </div>
+
+            <button class="btn btn-primary" id="scan-run-btn" style="width:100%; margin-top:16px;" disabled>
+              <span data-i18n="scan_run_button">Run Compliance Scan</span>
+            </button>
+
+            <div class="pipeline-steps" id="pipeline-steps" style="display:none;">
+              <div class="pipeline-step" data-step="preprocess"><div class="dot"></div><span data-i18n="scan_step_preprocess">Preprocessing image</span></div>
+              <div class="pipeline-step" data-step="ocr"><div class="dot"></div><span data-i18n="scan_step_ocr">Extracting text (OCR)</span></div>
+              <div class="pipeline-step" data-step="classify"><div class="dot"></div><span data-i18n="scan_step_classify">Classifying declarations</span></div>
+              <div class="pipeline-step" data-step="rules"><div class="dot"></div><span data-i18n="scan_step_rules">Checking Legal Metrology rules</span></div>
+            </div>
+          </div>
+
+          <div class="card" id="scan-result-card" style="display:none;">
+            <h3 data-i18n="scan_result_title">Inspection Result</h3>
+            <div id="result-banner" class="result-banner"></div>
+
+            <h3 data-i18n="scan_extracted_fields" style="margin-top:16px;">Extracted Declarations</h3>
+            <div id="extracted-fields"></div>
+
+            <h3 data-i18n="scan_compliance_checks" style="margin-top:16px;">Compliance Checks</h3>
+            <div id="compliance-checks"></div>
+
+            <h3 data-i18n="scan_violations" style="margin-top:16px;">Violations Found</h3>
+            <div id="violations-list"></div>
+
+            <div style="display:flex; gap:10px; margin-top:16px;">
+              <button class="btn btn-primary" id="download-report-btn" data-i18n="scan_download_report">Download PDF Report</button>
+              <button class="btn btn-outline" id="new-scan-btn" data-i18n="scan_new_scan">Scan Another Product</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ---------------- HISTORY VIEW ---------------- -->
+      <section id="view-history" class="view" style="display:none;">
+        <div class="filters-row">
+          <input type="text" id="history-search" data-i18n-placeholder="history_search" placeholder="Search by product, manufacturer or report no.">
+          <select id="history-filter-status">
+            <option value="" data-i18n="history_filter_all">All Statuses</option>
+            <option value="COMPLIANT" data-i18n="history_filter_compliant">Compliant</option>
+            <option value="NON_COMPLIANT" data-i18n="history_filter_non_compliant">Non-Compliant</option>
+          </select>
+        </div>
+        <div class="card" style="padding:0; overflow-x:auto;">
+          <table>
+            <thead>
+              <tr>
+                <th data-i18n="history_col_report">Report No.</th>
+                <th data-i18n="history_col_product">Product</th>
+                <th data-i18n="history_col_manufacturer">Manufacturer</th>
+                <th data-i18n="history_col_location">Location</th>
+                <th data-i18n="history_col_status">Status</th>
+                <th data-i18n="history_col_score">Score</th>
+                <th data-i18n="history_col_date">Date</th>
+                <th data-i18n="history_col_action">Action</th>
+              </tr>
+            </thead>
+            <tbody id="history-table-body"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ---------------- RULES VIEW ---------------- -->
+      <section id="view-rules" class="view" style="display:none;">
+        <h3 data-i18n="rules_title" style="color:var(--navy); margin-top:0;">Legal Metrology (Packaged Commodities) Rules, 2011 — Reference</h3>
+        <div class="rules-list" id="rules-list"></div>
+      </section>
+
+    </div>
+  </div>
+</div>
+
+<!-- ---------------- INSPECTION DETAIL MODAL ---------------- -->
+<div class="modal-overlay" id="detail-modal">
+  <div class="modal-box">
+    <button class="modal-close" id="modal-close-btn">&times;</button>
+    <div id="modal-content"></div>
+  </div>
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/i18n.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>

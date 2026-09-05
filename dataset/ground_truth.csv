@@ -1,0 +1,15 @@
+product_id,product_name,manufacturer_name,manufacturer_address,net_quantity_value,net_quantity_unit,mrp,mfg_month_year,defects
+PRD0001,LED Bulb 18W,Nestlé Foods India Pvt. Ltd.,"Plot 12, Industrial Area, Gurugram, Haryana - 122001",1,Nos.,299,May 2025,none
+PRD0002,Basmati Rice Premium,Amul Dairy Cooperative Ltd.,,10,kg,20,November 2025,missing_address
+PRD0003,Washing Detergent Powder,,,1,kg,20,February 2025,missing_manufacturer
+PRD0004,Basmati Rice Premium,Patanjali Ayurved Ltd.,"Patanjali Food & Herbal Park, Haridwar, Uttarakhand - 249404",10,kg,20,September 2025,malformed_qty
+PRD0005,LED Bulb 18W,ABC Foods Pvt. Ltd.,,4,Nos.,149,July 2025,missing_mrp
+PRD0006,Refined Sunflower Oil,Patanjali Ayurved Ltd.,"Patanjali Food & Herbal Park, Haridwar, Uttarakhand - 249404",2,L,599,January 2025,malformed_mrp
+PRD0007,LED Bulb 18W,Radhika Opto Electronics Ltd.,"Survey No. 57/2, Daman, Dadra & Nagar Haveli - 396210",2,Nos.,55,March 2025,missing_date
+PRD0008,Herbal Shampoo,Nestlé Foods India Pvt. Ltd.,"Plot 12, Industrial Area, Gurugram, Haryana - 122001",180,ml,99,February 2026,malformed_date
+PRD0009,Herbal Shampoo,Patanjali Ayurved Ltd.,"Patanjali Food & Herbal Park, Haridwar, Uttarakhand - 249404",340,ml,599,January 2026,missing_care
+PRD0010,Refined Sunflower Oil,Nestlé Foods India Pvt. Ltd.,"Plot 12, Industrial Area, Gurugram, Haryana - 122001",2,L,149,May 2026,small_font_qty
+PRD0011,Washing Detergent Powder,Amul Dairy Cooperative Ltd.,,4,kg,20,January 2025,malformed_mrp;missing_address
+PRD0012,Herbal Shampoo,Nestlé Foods India Pvt. Ltd.,"Plot 12, Industrial Area, Gurugram, Haryana - 122001",180,ml,599,February 2026,missing_care;missing_date
+PRD0013,Herbal Shampoo,Radhika Opto Electronics Ltd.,"Survey No. 57/2, Daman, Dadra & Nagar Haveli - 396210",650,ml,599,June 2025,none
+PRD0014,Herbal Shampoo,BPL Electro Appliances Ltd.,"Unit-7, Survey No.57/3, Daman & Diu - 396210",180,ml,299,May 2025,none

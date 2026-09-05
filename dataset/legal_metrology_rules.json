@@ -1,0 +1,68 @@
+{
+  "rules": [
+    {
+      "id": "R1_PRODUCT_NAME",
+      "field": "product_name",
+      "title": "Name of the Commodity",
+      "reference": "Rule 6(1)(a), Legal Metrology (Packaged Commodities) Rules, 2011",
+      "description": "Every package shall bear the common or generic name of the commodity.",
+      "severity": "HIGH"
+    },
+    {
+      "id": "R2_MANUFACTURER_NAME",
+      "field": "manufacturer_name",
+      "title": "Name of Manufacturer/Packer/Importer",
+      "reference": "Rule 6(1)(b)",
+      "description": "The package must declare the name of the manufacturer, or packer, or importer.",
+      "severity": "HIGH"
+    },
+    {
+      "id": "R3_MANUFACTURER_ADDRESS",
+      "field": "manufacturer_address",
+      "title": "Complete Address",
+      "reference": "Rule 6(1)(b)",
+      "description": "The complete registered address of the manufacturer/packer/importer must be declared.",
+      "severity": "HIGH"
+    },
+    {
+      "id": "R4_NET_QUANTITY",
+      "field": "net_quantity",
+      "title": "Net Quantity in Standard Units",
+      "reference": "Rule 6(1)(c), Rule 8",
+      "description": "Net quantity must be declared in standard units (g/kg for mass, ml/L for volume) using the metric system. Vague terms like 'Large Pack' are not permitted.",
+      "severity": "HIGH"
+    },
+    {
+      "id": "R5_MRP",
+      "field": "mrp",
+      "title": "Maximum Retail Price (inclusive of all taxes)",
+      "reference": "Rule 6(1)(e)",
+      "description": "MRP must be declared with the Rupee symbol/₹ and the words 'inclusive of all taxes'.",
+      "severity": "HIGH"
+    },
+    {
+      "id": "R6_MFG_DATE",
+      "field": "mfg_date",
+      "title": "Month & Year of Manufacture/Packing/Import",
+      "reference": "Rule 6(1)(f)",
+      "description": "The month and year in which the commodity was manufactured, packed, or imported must be declared (format: MM/YYYY or Month YYYY).",
+      "severity": "MEDIUM"
+    },
+    {
+      "id": "R7_CONSUMER_CARE",
+      "field": "consumer_care",
+      "title": "Consumer Care Details",
+      "reference": "Rule 6(1)(d)",
+      "description": "A telephone number, email or address for consumer complaints must be declared.",
+      "severity": "MEDIUM"
+    },
+    {
+      "id": "R8_FONT_SIZE",
+      "field": "font_size",
+      "title": "Minimum Font Size for Declarations",
+      "reference": "Rule 6, Second Schedule",
+      "description": "Declarations must meet minimum height: 1mm up to 200g/ml, 2mm from 200g/ml to 1kg/L, 4mm above 1kg/L.",
+      "severity": "MEDIUM"
+    }
+  ]
+}
