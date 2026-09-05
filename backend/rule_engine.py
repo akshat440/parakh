@@ -9,7 +9,11 @@ import json
 import os
 from ocr_engine import min_required_mm
 
-RULES_PATH = os.path.join(os.path.dirname(__file__), "..", "dataset",
+_CANDIDATES = [
+    os.path.join(os.path.dirname(__file__), "dataset", "legal_metrology_rules.json"),
+    os.path.join(os.path.dirname(__file__), "..", "dataset", "legal_metrology_rules.json"),
+]
+RULES_PATH = next((p for p in _CANDIDATES if os.path.exists(p)), _CANDIDATES[0]), "..", "dataset",
                            "legal_metrology_rules.json")
 
 with open(RULES_PATH, "r") as f:
