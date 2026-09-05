@@ -13,20 +13,16 @@ _CANDIDATES = [
     os.path.join(os.path.dirname(__file__), "dataset", "legal_metrology_rules.json"),
     os.path.join(os.path.dirname(__file__), "..", "dataset", "legal_metrology_rules.json"),
 ]
-RULES_PATH = next((p for p in _CANDIDATES if os.path.exists(p)), _CANDIDATES[0]), "..", "dataset",
-                           "legal_metrology_rules.json")
+RULES_PATH = next((p for p in _CANDIDATES if os.path.exists(p)), _CANDIDATES[0])
 
 with open(RULES_PATH, "r") as f:
     RULES = {r["id"]: r for r in json.load(f)["rules"]}
 
 
-def check_compliance(fields: dict, qty_font_boxes: list):
+def check_compliance(fields: dict, font_analysis: list):
     """
     fields: output of ocr_engine.classify_fields()
-    qty_font_boxes: output of ocr_engine.net_qty_font_heights() -- the
-        bounding boxes specifically for the net-quantity declaration, which
-        is what the Second Schedule's tiered minimum letter-height rule
-        actually governs (not every word on the label).
+    font_analysis: output of ocr_engine.analyze_font_sizes()
     Returns dict: {checks: [...], violations: [...], score, status}
     """
     checks = []
@@ -94,19 +90,18 @@ def check_compliance(fields: dict, qty_font_boxes: list):
     else:
         fail("R7_CONSUMER_CARE")
 
-    # R8 Font size -- checked specifically against the net-quantity
-    # declaration's bounding boxes (see net_qty_font_heights docstring)
+    # R8 Font size -- check the smallest-detected relevant declaration
     required_mm = min_required_mm(fields.get("net_quantity_value"), fields.get("net_quantity_unit"))
-    undersized = [b for b in qty_font_boxes if 0 < b["height_mm"] < required_mm]
-    if qty_font_boxes and not undersized:
+    undersized = [b for b in font_analysis if 0 < b["height_mm"] < required_mm]
+    if font_analysis and not undersized:
         ok("R8_FONT_SIZE")
     elif undersized:
         worst = min(undersized, key=lambda b: b["height_mm"])
         fail("R8_FONT_SIZE",
-             f"Net quantity text '{worst['text']}' measured ~{worst['height_mm']}mm; "
+             f"Text '{worst['text']}' measured ~{worst['height_mm']}mm; "
              f"minimum required is {required_mm}mm for this pack size.")
     else:
-        ok("R8_FONT_SIZE")  # no matching boxes found -> don't penalize in this lightweight demo
+        ok("R8_FONT_SIZE")  # no data -> don't penalize in this lightweight demo
 
     total = len(checks)
     passed = sum(1 for c in checks if c["result"] == "PASS")
